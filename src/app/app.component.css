@@ -1,0 +1,16 @@
+.navbar-background {
+  background-color: purple;
+}
+.logo{
+  width:182px;
+  height:36px;
+}
+.logo-color{
+  background-color: #5c249c;
+  color: white;
+}
+.link-active{
+  color: #5c249c !important;
+  text-decoration: underline;
+  font-weight: bold;
+}

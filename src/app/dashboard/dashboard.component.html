@@ -1,0 +1,205 @@
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+</nav>
+
+<h5>Dashboard</h5>
+<h6>{{ today | date }}</h6>
+<div class="row">
+    <div class="col-lg-3 pb-3" style="background-color: #e9e6e6">
+        <div class="row">
+            <div class="col-11 text-white text-center mx-2 rounded pt-2 pv-2 font-weight bold"
+                style="background-color: #a39e9e">
+                {{ designation | uppercase }}
+            </div>
+            <div class="col-12 text-center mt-2">
+                <img src="../../assets/user.png" width="120px" alt="" />
+            </div>
+
+            <div class="col-12 text-center pt-2 pb-2 font-weight-bold">
+                {{ username | lowercase }}
+            </div>
+
+            <div class="col-12 text-center pt-2 pb-2">TEAM SUMMARY</div>
+
+            <div class="col-12 mb-3">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        NO. OF TEAM MEMBERS
+                        <span class="badge badge-secondary badge-pill">
+                            {{ noOfTeamMembers }}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        TOTAL COST OF ALL PROJECTS
+                        <span class="badge badge-secondary badge-pill">
+                            ${{ totalCostOfAllProjects }}k
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        PENDING TASKS
+                        <span class="badge badge-secondary badge-pill">
+                            {{ pendingTasks }}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        UPCOMING PROJECTS
+                        <span class="badge badge-secondary badge-pill">
+                            {{ upcomingProjects }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-12 text-center pt-2 pb-2">CLIENTS</div>
+            <div class="col-12">
+                <ul class="list-group list-group-flush">
+                    <li *ngFor="let client of clients" class="list-group-item">
+                        {{ client | slice: 0:10 }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-12 pt-0 pb-2" style="background-color: #e9e6e6">
+                <div class="row mt-2">
+                    <div class="col-6 text-left">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown">
+                                {{ projects[0] ? projects[0] : "No Projects" }}
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item" *ngFor="let project of projects"
+                                    onclick="return false" (click)="onProjectChange($event)">
+                                    {{ project }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 text-right">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown">
+                                {{ years[0] ? years[0] : "No Year" }}
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="" class="dropdown-item" *ngFor="let year of years">
+                                    {{ year }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="background-color: #718d97"
+                class="col-11 mx-auto mt-1 text-white text-center pt-2 pb-2 mx-auto rounded font-weight bold">
+                PROJECT BRIEFING
+            </div>
+            <div class="col-12">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>Project Cost</td>
+                        <td>{{ projectCost | currency }}</td>
+                    </tr>
+                    <tr>
+                        <td>Current Expenditure</td>
+                        <td>{{ currentExpenditure | currency }}</td>
+                    </tr>
+                    <tr>
+                        <td>Available Funds</td>
+                        <td>{{ availableFunds | currency }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="background-color: #718d97"
+                class="col-11 mx-auto mt-1 text-white text-center pt-2 pb-2 mx-auto rounded font-weight bold">
+                TEAM MEMBERS SUMMARY
+            </div>
+            <div class="col-12">
+                <table class="table">
+                    <tr>
+                        <th>Region</th>
+                        <th>Team Members Count</th>
+                        <th>Temporary Unavailabe Members</th>
+                    </tr>
+                    <tr *ngFor="let teamMemberSummary of teamMembersSummary">
+                        <td>
+                            <b>{{ teamMemberSummary.region }}</b>
+                        </td>
+                        <td>{{ teamMemberSummary.teamMembersCount }}</td>
+                        <td>{{ teamMemberSummary.totalUnavailableMembers }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3" style="background-color: #e9e6e6">
+        <div class="row">
+            <div style="background-color: #718d97"
+                class="col-11 mx-auto mt-1 text-white text-center pt-2 pb-2 mx-auto rounded font-weight bold">
+                TEAM MEMBERS
+            </div>
+
+            <div class="col-lg-12 pt-2">
+                <div class="accordion" id="accordion1">
+                    <!-- Region starts -->
+                    <div class="card" *ngFor="let teamMember of teamMembers; index as i">
+                        <div class="card-header bg-secondary" [id]="'card' + i">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link text-white" type="button" data-toggle="collapse"
+                                    [attr.data-target]="'#cardbody' + i">
+                                    {{ teamMember.region }}
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div [id]="'cardbody' + i" data-parent="#accordion1" class="collapse"
+                            [ngClass]="i == 0 ? 'show' : ''">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let member of teamMember.members">
+                                            <td>{{ member.id }}</td>
+                                            <td [style.color]="
+                          member.status == 'Busy' ? 'red' : 'black'
+                        ">
+                                                {{ member.name }}
+                                            </td>
+                                            <td>
+                                                <i class="fa" [ngClass]="{
+                            'fa-phone text-success':
+                              member.status == 'Available',
+                            'fa-user-times text-danger': member.status == 'Busy'
+                          }"></i>
+
+                                                {{ member.status }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Region ends -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
